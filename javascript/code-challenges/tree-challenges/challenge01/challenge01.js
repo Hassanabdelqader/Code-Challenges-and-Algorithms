@@ -7,24 +7,14 @@ function Node(value, left = null, right = null) {
 }
 
 var Tree = function (preorder, inorder) {
-  const recursive = function (preorder, inorder) {
-    if (inorder.length === 0) return null;
-
-    let left, right;
-    let Value = preorder.shift();
-
-    const root = new Node(Value);
-
-    left = inorder.slice(0, inorder.indexOf(Value));
-    right = inorder.slice(inorder.indexOf(Value) + 1);
-
-    root.left = recursive(preorder, left);
-    root.right = recursive(preorder, right);
-
-    return root;
-  };
-
-  return recursive(preorder, inorder);
+  if (inorder.length === 0) return null;
+  if (preorder.length === 0) return null;
+  const rootValue = preorder[0];
+  let tree = new Node(rootValue)
+  let i = inorder.indexOf(rootValue)
+  tree.left = Tree(preorder.slice(1, i+1), inorder.slice(0, i));
+  tree.right = Tree(preorder.slice(i+1), inorder.slice(i+1));
+  return tree;
 };
 
 module.exports = Tree;
